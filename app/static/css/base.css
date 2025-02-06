@@ -1,0 +1,117 @@
+
+:root{
+
+    /* Root colour palette taken from IDEM - Martin Garrix. */
+
+    --opal: #afc6c2;
+    --gumbo: #7aa5a4;
+    --gable-green: #112528;
+    --oracle: #356f75;
+    --patina: #609294;
+    --juniper: #608181;
+    --pewter: #90a4a0;
+    --blumine: #1b5a65;
+    --nile-blue: #174952;
+    --limed-spruce: #395456;
+
+    /* Colours. */
+
+    --primary-background:#afc6c2;
+    --secondary-background:#609294;
+
+    --primary-font-colour:#112528;
+    --secondary-font-colour:#90a4a0;
+    --link--colour:#1b5a65;
+    --h1-font-colour:#174952;
+    --h2-font-colour:#356f75;
+
+    --primary-button-colour:#1b5a65;
+    --secondary-button-colour:#7aa5a4;
+    
+    --hover-colour:#395456;
+
+    --icon-colour:#90a4a0;
+
+    --container-shadow-colour:#174952;
+
+    /* Caligraphy. */
+
+    --font-weight-normal: 400;
+    --font-weight-bold: 700;
+
+    --font-size-body: 16px;
+    --font-size-h1: 48px;
+    --font-size-h2: 36px;
+    --font-size-h3: 30px;
+    --font-size-small: 14px;
+
+}
+
+@font-face {
+    font-family: 'red-hat-custom';
+    src: url(../fonts/RedHatDisplay-VariableFont_wght.ttf);
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'red-hat-custom';
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    background-color: var(--primary-background);
+    
+}
+
+ul {
+    position: fixed;
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    gap: 20px;
+    width: 90%;
+    background-color: var(--secondary-background);
+    border-radius: 25px;
+    z-index: 15;
+    list-style-type: none;
+}
+
+.main-container {
+    overflow: hidden;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--primary-font-colour);
+}
+
+.nav-links a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-links img {
+    max-width: 70%;
+    height: auto;
+    transition: filter 0.4s ease;
+}
+
+.nav-links a:hover img {
+    filter: grayscale(500%) brightness(500%) contrast(500%);
+}
+
+
+/*
+
+    Need creative ways to represent the nav menu on mobile.
+
+*/

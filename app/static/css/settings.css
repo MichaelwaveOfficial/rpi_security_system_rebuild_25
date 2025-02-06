@@ -1,0 +1,121 @@
+
+/* Dropdown containers styling. */
+
+.scroll-container {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    float: left; /* DONT TOUCH OR WONT WORK PROPERLY XD.. */
+    width: 32%;
+    background-color: var(--secondary-background);
+    padding: 20px;
+    margin: 10px;
+    border-radius: 25px;
+    transition: max-height 0.5s ease; 
+    overflow: hidden; 
+}
+
+.scroll-container h2 {
+    position: relative;
+    font-size: 30px;
+    padding: 0 0 5px 0;
+}
+
+.scroll-container h2 span::after {
+    float: right;
+    content: '+';
+}
+
+.settings-container{
+    display: block;
+    clear: both;
+    position: relative;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+}
+
+.settings-container p {
+    padding: 20px;
+}
+
+/* Settings controls stlying. */
+
+
+/* BUTTON SLIDER. */
+
+label {
+    position: relative;
+    display: inline-block;
+    width: 60%;
+    height: auto;
+}
+
+label input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-slider.round {
+    border-radius: 50%;
+}
+
+.switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    background-color: var(--primary-background);
+    transition: var(--secondary-background) 0.4 ease, transform 0.4s ease;
+}
+
+.switch-slider:before {
+    border-radius: 50%;
+}
+
+input:checked + .switch-slider {
+    background-color: #2196F3;
+}
+
+input:focus + .switch-slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .switch-slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.switch-slider.round {
+    border-radius: 34px;
+}
+
+.switch-slider.round:before {
+    border-radius: 50%;
+}
+
+/* SLIDER STYLING. */
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.slider {
+    width: 100%;
+    opacity: 0.7;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slide-output {
+    color: var(--patina);
+    font-size: 32px;
+}

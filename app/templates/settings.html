@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
+{% endblock head %}
+
+{% block body %}
+
+    <div class="scroll-container">
+
+        <!-- Motion detection related settings. -->
+
+        <h2 class="scroll-container-title"><span>Motion:</span></h2>
+
+        <p>Fine tune the motion detection for your requirements.</p>
+
+        <div class="settings-container">
+
+            <h3>Range</h3>
+
+            <p>How far the algorithm will pick up on detections.</p>
+                
+                
+            <div class="slider-container">
+                <p>1</p>
+                <input type="range" min="1" max="100" value="50" class="slider" id="slider1">
+                <p>100</p>
+                <span class = 'slide-output' id = 'output1'></span>
+            </div>
+
+            <h3>Sensitivity</h3>
+            <p>How much movement is required to trigger the algorithm.</p>
+
+            <div class="slider-container">
+                <p>1</p>
+                <input type="range" min="1" max="100" value="50" class="slider" id="slider2">
+                <p>100</p>
+                <span class = 'slide-output' id="output2"></span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="scroll-container">
+
+        <!-- Video quality related settings. -->
+
+        <h2 class="scroll-container-title"><span>Stream:</span></h2>
+
+        <p>Fine tune the stream to leverage either performance or quality.</p>
+
+        <div class="settings-container">
+
+            <p>Tailor the video settings for performance or quality.</p>
+
+            <h3>Resolution</h3>
+            <p>Tune the quality of the stream. 
+                Lower resolution will enhance the device performance and reduce overheads whilst higher resolutions will deliver better quality.
+            </p>
+
+            <div class="slider-container">
+                <p>1</p>
+                <input type="range" min="1" max="100" value="50" class="slider" id="slider3">
+                <p>100</p>
+                <span class = 'slide-output 'id="output3"></span>
+            </div>
+
+            <h3>Framerate</h3>
+            <p>Tailor the stream latency, improved responsiveness will require more resources whilst less will improve performance.</p>
+
+            <div class="slider-container">
+                <p>1</p>
+                <input type="range" min="1" max="100" value="50" class="slider" id="slider4">
+                <p>100</p>
+                <span class = 'slide-output' id="output4"></span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="scroll-container">
+
+        <!-- Settings for user to tailor alerts to their liking. -->
+
+        <h2 class="scroll-container-title"><span>Alerts:</span></h2>
+        <p>Tailor alerts to your liking.</p>
+
+        <div class="settings-container">
+
+            <p>Customise how the device contacts you.</p>
+
+            <h3>Toggle</h3>
+            <p>Toggle alerts on / off. </p>
+
+            <label class="switch">
+                <input type="checkbox">
+                <span class="switch-slider round"></span>
+            </label>
+
+            <h3>Frequency</h3>
+            <p>The frequency of which the device will notify you.</p>
+
+            <div class="slider-container">
+                <p>1</p>
+                <input type="range" min="1" max="100" value="50" class="slider" id="slider5">
+                <p>100</p>
+                <p><span class = 'slide-output' id="output5"></span></p>
+            </div>
+
+        </div>
+
+    </div>
+
+    {% block extra_js %}
+        <!-- Inject page speicfic JavaScript here. -->
+        <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+    {% endblock extra_js %}
+
+{% endblock body %}
