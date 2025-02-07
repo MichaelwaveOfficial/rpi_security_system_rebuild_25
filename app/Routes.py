@@ -20,9 +20,19 @@ def video_stream():
 
 @main.route('/')
 def index():
+
+    # Testing fake stream with test stream iteration.
+    try:
+        # Try to get the first frame
+        next(camera.test_stream())
+        stream_available = True  
+    except StopIteration:
+        # Otherwise camera loading?
+        stream_available = False
+  
     return render_template(
         'index.html',
-        title='Home'
+        stream_available=stream_available
     )
 
 
@@ -38,6 +48,6 @@ def settings():
 def captures():
     return render_template(
         'captures.html',
-        images=[],
-        image=None
+        images=[], # Accumulate list of images on device
+        image=None # USer selected image.
     )

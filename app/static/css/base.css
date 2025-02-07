@@ -110,6 +110,78 @@ ul {
 }
 
 
+/* TOGGLE SWITCHES. */
+
+input[type=checkbox] {
+    height: 0;
+    width: 0;
+}
+
+label {
+    display: block;
+    cursor: pointer;
+    width: 60px;
+    text-indent: -9999px;
+    background: grey;
+    border-radius: 100px;
+    position: relative;
+}
+
+label:after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 90px;
+    transition: 0.3s;
+}
+
+input:checked + label {
+    background: #bada55;
+}
+
+input:checked + label:after {
+    left: calc(100% - 5px);
+    transform: translate(-100%);
+}
+
+label:active:after {
+    width: 10px;
+}
+
+/* SORTING BUTTONS */
+
+.sort-button {
+    background-color: var(--primary-button-colour);
+    width: 20%;
+    font-size: 1.25em;
+    border: none;
+    padding: 2px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sort-button:hover {
+    background-color: var(--secondary-button-colour);
+}
+
+/* SEARCH BARS */
+
+.search-bar {
+    width: -webkit-fill-available;
+    border-radius: 12px;
+    border-color: var(--primary-background);
+    padding: 4px;
+    font-size: 1em;
+    background-color: var(--secondary-background);
+    color: black;
+}
+
+
 /*
 
     Need creative ways to represent the nav menu on mobile.

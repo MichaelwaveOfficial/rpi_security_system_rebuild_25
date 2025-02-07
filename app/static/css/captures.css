@@ -46,6 +46,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    justify-content: space-around;
 }
 
 .capture-container {
@@ -57,7 +58,8 @@
 }
 
 .image-metadata {
-
+    display: flex;
+    justify-self: center;
 }
 
 .image-view {
