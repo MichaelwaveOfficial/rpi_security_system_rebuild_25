@@ -1,12 +1,25 @@
 
 /* Dropdown containers styling. */
 
+body {
+    overflow-y: hidden;
+}
+
+.main-container {
+    display: inline-grid;
+    width: 100%;
+    margin-top: 50px;
+    overflow: hidden;
+}
+
 .scroll-container {
     cursor: pointer;
     position: relative;
     display: inline-block;
     float: left; /* DONT TOUCH OR WONT WORK PROPERLY XD.. */
-    width: 32%;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: var(--secondary-background);
     padding: 20px;
     margin: 10px;
@@ -36,8 +49,13 @@
     transition: max-height 0.5s ease-in-out;
 }
 
-.settings-container p{
+.settings-container p {
     padding: 5px 0px 5px 20px;
+}
+
+input[type=email], input[type=password] {
+    margin: 5px 0px 5px 20px;
+    border-radius: 10px;
 }
 
 .toggle-container {
@@ -68,4 +86,13 @@
 .slide-output {
     color: var(--patina);
     font-size: 32px;
+}
+
+/* FORM SUBMISSION BUTTON. */
+
+button {
+    margin: 5px 0px 5px 20px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }

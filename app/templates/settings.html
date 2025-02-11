@@ -6,112 +6,159 @@
 
 {% block body %}
 
-    <div class="scroll-container">
+    <form id='settings-form' method="POST" action="{{ url_for('main.update_settings') }}">
 
-        <!-- Motion detection related settings. -->
+        <div class="scroll-container">
 
-        <h2 class="scroll-container-title"><span>Motion:</span></h2>
+            <!-- Motion detection related settings. -->
 
-        <p>Fine tune the motion detection for your requirements.</p>
+            <h2 class="scroll-container-title"><span>Motion:</span></h2>
 
-        <div class="settings-container">
+            <p>Fine tune the motion detection for your requirements.</p>
 
-            <h3>Range</h3>
+            <div class="settings-container">
 
-            <p>How far the algorithm will pick up on detections.</p>
-                
-                
-            <div class="slider-container">
-                <p>1</p>
-                <input type="range" min="1" max="100" value="50" class="slider" id="slider1">
-                <p>100</p>
-                <span class = 'slide-output' id = 'output1'></span>
-            </div>
+                <h3>Sensitivity</h3>
+                <p>Adjust how sensitive the system is towards a detections movement.</p>
 
-            <h3>Sensitivity</h3>
-            <p>How much movement is required to trigger the algorithm.</p>
+                <div class="slider-container">
+                    <p>1 pixel</p>
+                    <input type="range" name="motion_detection[sensitivity]" min="1" max="100" value="{{ settings.motion_detection.sensitivity }}" class="slider" id="slider2">
+                    <p>100 pixels</p>
+                    <span class = 'slide-output' id="output0"></span>
+                </div>
 
-            <div class="slider-container">
-                <p>1</p>
-                <input type="range" min="1" max="100" value="50" class="slider" id="slider2">
-                <p>100</p>
-                <span class = 'slide-output' id="output2"></span>
+                <h3>Threat Escalation</h3>
+                <p>Customise how long an object needs to be tracked before escalation of its threat level.</p>
+
+                <div class="slider-container">
+                    <p>1 second</p>
+                    <input type="range" name="motion_detection[threat_escalation]" min="1" max="60" value="{{ settings.motion_detection.threat_escalation }}" class="slider" id="slider3">
+                    <p>60 seconds</p>
+                    <span class = 'slide-output' id="output1"></span>
+                </div>
+
+                <h3>Maximim Threat Level</h3>
+                <p>Determine a detections maximum threshold to be exceeded in order to consider it a serious threat.</p>
+
+                <div class="slider-container">
+                    <p>Level 1</p>
+                    <input type="range"  name="motion_detection[max_threat_level]" min="1" max="60" value="{{ settings.motion_detection.maximum_threat_level }}" class="slider" id="slider3">
+                    <p>Level 10</p>
+                    <span class = 'slide-output' id="output2"></span>
+                </div>
+
             </div>
 
         </div>
 
-    </div>
+        <div class="scroll-container">
 
-    <div class="scroll-container">
+            <!-- Video quality related settings. -->
 
-        <!-- Video quality related settings. -->
+            <h2 class="scroll-container-title"><span>Stream:</span></h2>
 
-        <h2 class="scroll-container-title"><span>Stream:</span></h2>
+            <p>Fine tune the stream to leverage either performance or quality.</p>
 
-        <p>Fine tune the stream to leverage either performance or quality.</p>
+            <div class="settings-container">
 
-        <div class="settings-container">
+                <p>Tailor the video settings for performance or quality.</p>
 
-            <p>Tailor the video settings for performance or quality.</p>
+                <h3>Quality</h3>
+                <p>Tune the quality of the stream. 
+                    Lower resolution will enhance the device performance and reduce overheads whilst higher resolutions will deliver better quality.
+                </p>
 
-            <h3>Resolution</h3>
-            <p>Tune the quality of the stream. 
-                Lower resolution will enhance the device performance and reduce overheads whilst higher resolutions will deliver better quality.
+                    <select name='quality' class='sort-button' id='quality'  name="stream_quality[quality]">
+
+                        {% for stream_type, setting in settings.stream_quality.items() %}
+
+                            <option value="{{ stream_type | upper }}">
+                                <p>Framerate: {{ setting.framerate | upper }}</p>
+                                <p>Resolution: {{ setting.resolution[0] | upper }}x{{ setting.resolution[1] | upper }}</p>
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+            </div>
+
+        </div>
+
+        <div class="scroll-container">
+
+            <!-- Settings for user to tailor alerts to their liking. -->
+
+            <h2 class="scroll-container-title"><span>Alerts:</span></h2>
+            <p>Tailor the applications frequency of communications to your liking.</p>
+
+            <div class="settings-container">
+
+                <h3>Toggle</h3>
+                <p>Customise when the device should be placed in passive mpode</p>
+
+                <div class="toggle-container">
+                    <p>Toggle alerts off / on. </p>
+                    <input type="checkbox"  name="alerts[toggle]" id="alerts-switch" {% if settings.alert_settings.toggle %} checked {% endif %}>
+                    <label for="alerts-switch">Toggle</label>
+                </div>
+        
+                <h3>Frequency</h3>
+                <p>The frequency of which the device will notify you.</p>
+
+                <div class="slider-container">
+                    <p>1 second</p>
+                    <input type="range"  name="alerts[frequency]" min="1" max="1800" value="{{ settings.alert_settings.frequency }}" class="slider" id="slider5">
+                    <p>2 minutes</p>
+                    <p><span class = 'slide-output' id="output6"></span></p>
+                </div>
+
+                <h3>Target Email.</h3>
+                <p>The designated recipient of the detections email once a threat has been identified.</p>
+                <input type="email"  name="alerts[target_email]" value="{{ settings.alert_settings.target_email }}">
+
+                <h3>App Password.</h3>
+                <p>Generated app password from your google account where emails will be sent from.</p>
+                <input type="password"  name="alerts[app_password]" value="{{ settings.alert_settings.app_password }}">
+
+            </div>
+        </div>
+
+        <div class="scroll-container">
+
+            <!-- Settings for user to tailor alerts to their liking. -->
+
+            <h2 class="scroll-container-title"><span>Storage:</span></h2>
+            <p>Decide whether the deivce captures video clips or stills of detections and whether or not 
+                automatic resource management is in place.
             </p>
 
-            <div class="slider-container">
-                <p>1</p>
-                <input type="range" min="1" max="100" value="50" class="slider" id="slider3">
-                <p>100</p>
-                <span class = 'slide-output 'id="output3"></span>
-            </div>
+            <div class="settings-container">
 
-            <h3>Framerate</h3>
-            <p>Tailor the stream latency, improved responsiveness will require more resources whilst less will improve performance.</p>
+                <h3>Automatic Resource Management</h3>
+                <p>Determine whether or not the device or yourself is in control of the devices resources.</p>
 
-            <div class="slider-container">
-                <p>1</p>
-                <input type="range" min="1" max="100" value="50" class="slider" id="slider4">
-                <p>100</p>
-                <span class = 'slide-output' id="output4"></span>
-            </div>
+                <div class="toggle-container">
+                    <p>Toggle resource management off / on. </p>
+                    <input type="checkbox"  name="storage[auto_management]" id="resource-switch" {% if settings.storage_settings.auto_resource_management %} checked {% endif %}>
+                    <label for="resource-switch">Toggle</label>
+                </div>
+        
+                <h3>Content Type</h3>
+                <p>Choose whether the device captures video clips or image stills.</p>
 
-        </div>
+                <div class="toggle-container">
+                    <p>Clips / Stills</p>
+                    <input type="checkbox" name="storage[content_type]" id="content-switch" {% if settings.alert_settings.content_type %} checked {% endif %}>
+                    <label for="content-switch">Toggle</label>
+                </div>
 
-    </div>
-
-    <div class="scroll-container">
-
-        <!-- Settings for user to tailor alerts to their liking. -->
-
-        <h2 class="scroll-container-title"><span>Alerts:</span></h2>
-        <p>Tailor alerts to your liking.</p>
-
-        <div class="settings-container">
-
-            <p>Customise how the device contacts you.</p>
-
-            <h3>Toggle</h3>
-
-            <div class="toggle-container">
-                <p>Toggle alerts off / on. </p>
-                <input type="checkbox" id="toggle-switch">
-                <label for="toggle-switch">Toggle</label>
-            </div>
-    
-            <h3>Frequency</h3>
-            <p>The frequency of which the device will notify you.</p>
-
-            <div class="slider-container">
-                <p>1</p>
-                <input type="range" min="1" max="100" value="50" class="slider" id="slider5">
-                <p>100</p>
-                <p><span class = 'slide-output' id="output5"></span></p>
             </div>
 
         </div>
 
-    </div>
+    </form>
 
     {% block extra_js %}
         <!-- Inject page speicfic JavaScript here. -->
