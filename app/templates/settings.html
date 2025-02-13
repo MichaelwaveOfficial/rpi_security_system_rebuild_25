@@ -8,55 +8,52 @@
 
     <form id='settings-form' method="POST" action="{{ url_for('main.update_settings') }}">
 
+        <!-- Motion Section. -->
         <div class="scroll-container">
 
             <!-- Motion detection related settings. -->
 
-            <h2 class="scroll-container-title"><span>Motion:</span></h2>
+            <h2 class="scroll-container-title">Motion:</h2>
 
             <p>Fine tune the motion detection for your requirements.</p>
 
             <div class="settings-container">
 
-                <h3>Sensitivity</h3>
+                <h3>Sensitivity : <span class = 'slider-output' id="slider-output0">{{ settings.motion_detection.sensitivity }}</span> Pixels</h3>
                 <p>Adjust how sensitive the system is towards a detections movement.</p>
 
                 <div class="slider-container">
-                    <p>1 pixel</p>
-                    <input type="range" name="motion_detection[sensitivity]" min="1" max="100" value="{{ settings.motion_detection.sensitivity }}" class="slider" id="slider2">
-                    <p>100 pixels</p>
-                    <span class = 'slide-output' id="output0"></span>
+                    <p>1</p>
+                    <input type="range" name="motion_detection[sensitivity]" min="1" max="100" value="{{ settings.motion_detection.sensitivity }}" class="slider" id="slider0">
+                    <p>100 </p>
                 </div>
 
-                <h3>Threat Escalation</h3>
+                <h3>Threat Escalation : <span class = 'slider-output' id="slider-output1">{{ settings.motion_detection.threat_escalation_timer }}</span> Seconds</h3>
                 <p>Customise how long an object needs to be tracked before escalation of its threat level.</p>
 
                 <div class="slider-container">
-                    <p>1 second</p>
-                    <input type="range" name="motion_detection[threat_escalation]" min="1" max="60" value="{{ settings.motion_detection.threat_escalation }}" class="slider" id="slider3">
-                    <p>60 seconds</p>
-                    <span class = 'slide-output' id="output1"></span>
+                    <p>1</p>
+                    <input type="range" name="motion_detection[threat_escalation_timer]" min="1" max="60" value="{{ settings.motion_detection.threat_escalation_timer }}" class="slider" id="slider1">
+                    <p>60</p>
                 </div>
 
-                <h3>Maximim Threat Level</h3>
+                <h3>Maximim Threat Level : Level <span class = 'slider-output' id="slider-output2">{{ settings.motion_detection.maximum_threat_threshold }}</span></h3>
                 <p>Determine a detections maximum threshold to be exceeded in order to consider it a serious threat.</p>
 
                 <div class="slider-container">
-                    <p>Level 1</p>
-                    <input type="range"  name="motion_detection[max_threat_level]" min="1" max="60" value="{{ settings.motion_detection.maximum_threat_level }}" class="slider" id="slider3">
-                    <p>Level 10</p>
-                    <span class = 'slide-output' id="output2"></span>
+                    <p>1</p>
+                    <input type="range"  name="motion_detection[maximum_threat_threshold]" min="1" max="10" value="{{ settings.motion_detection.maximum_threat_threshold }}" class="slider" id="slider2">
+                    <p>10</p>
                 </div>
 
             </div>
 
         </div>
 
+        <!-- Stream quality. -->
         <div class="scroll-container">
 
-            <!-- Video quality related settings. -->
-
-            <h2 class="scroll-container-title"><span>Stream:</span></h2>
+            <h2 class="scroll-container-title">Stream:</h2>
 
             <p>Fine tune the stream to leverage either performance or quality.</p>
 
@@ -64,18 +61,17 @@
 
                 <p>Tailor the video settings for performance or quality.</p>
 
-                <h3>Quality</h3>
+                <h3>Preferred Quality : <span class = 'toggle-output' id="select-output0">{{ settings.stream_quality.preferred_quality }}</span></h3>
                 <p>Tune the quality of the stream. 
                     Lower resolution will enhance the device performance and reduce overheads whilst higher resolutions will deliver better quality.
                 </p>
 
-                    <select name='quality' class='sort-button' id='quality'  name="stream_quality[quality]">
+                    <select class='select' id='preferred_quality'  name="stream_quality[preferred_quality]">
 
-                        {% for stream_type, setting in settings.stream_quality.items() %}
+                        {% for stream_type, setting in settings.stream_quality.items()  if stream_type != 'preferred_quality' %}
 
-                            <option value="{{ stream_type | upper }}">
-                                <p>Framerate: {{ setting.framerate | upper }}</p>
-                                <p>Resolution: {{ setting.resolution[0] | upper }}x{{ setting.resolution[1] | upper }}</p>
+                            <option value="{{ stream_type }}" >
+                                Framerate: {{ setting.framerate }} | Resolution: {{ setting.resolution[0] }}x{{ setting.resolution[1] }}
                             </option>
 
                         {% endfor %}
@@ -86,41 +82,40 @@
 
         </div>
 
+        <!-- Alerts Section. -->
         <div class="scroll-container">
 
-            <!-- Settings for user to tailor alerts to their liking. -->
-
-            <h2 class="scroll-container-title"><span>Alerts:</span></h2>
+            <h2 class="scroll-container-title">Alerts</h2>
             <p>Tailor the applications frequency of communications to your liking.</p>
 
             <div class="settings-container">
 
-                <h3>Toggle</h3>
+                <h3>Toggle : <span class = 'toggle-output' id="toggle-output0">{{ settings.alert_settings.toggle }}</span></h3>
                 <p>Customise when the device should be placed in passive mpode</p>
 
                 <div class="toggle-container">
                     <p>Toggle alerts off / on. </p>
-                    <input type="checkbox"  name="alerts[toggle]" id="alerts-switch" {% if settings.alert_settings.toggle %} checked {% endif %}>
-                    <label for="alerts-switch">Toggle</label>
+                    <input type="checkbox" class="toggle"  name="alert_settings[toggle]" id="toggle0" value="{{ settings.alert_settings.toggle }}"
+                    {% if settings.alert_settings.toggle %} checked {% endif %}>
+                    <label for="toggle0">Toggle</label>
                 </div>
         
-                <h3>Frequency</h3>
+                <h3>Frequency : <span class = 'slider-output' id="slider-output3">{{ settings.alert_settings.frequency }}</span> Seconds</h3>
                 <p>The frequency of which the device will notify you.</p>
 
                 <div class="slider-container">
                     <p>1 second</p>
-                    <input type="range"  name="alerts[frequency]" min="1" max="1800" value="{{ settings.alert_settings.frequency }}" class="slider" id="slider5">
+                    <input type="range"  name="alert_settings[frequency]" min="1" max="1800" value="{{ settings.alert_settings.frequency }}" class="slider" id="slider3">
                     <p>2 minutes</p>
-                    <p><span class = 'slide-output' id="output6"></span></p>
                 </div>
 
                 <h3>Target Email.</h3>
                 <p>The designated recipient of the detections email once a threat has been identified.</p>
-                <input type="email"  name="alerts[target_email]" value="{{ settings.alert_settings.target_email }}">
+                <input type="email"  name="alert_settings[target_email]" value="{{ settings.alert_settings.target_email }}">
 
                 <h3>App Password.</h3>
                 <p>Generated app password from your google account where emails will be sent from.</p>
-                <input type="password"  name="alerts[app_password]" value="{{ settings.alert_settings.app_password }}">
+                <input type="password"  name="alert_settings[app_password]" value="{{ settings.alert_settings.app_password }}">
 
             </div>
         </div>
@@ -129,29 +124,30 @@
 
             <!-- Settings for user to tailor alerts to their liking. -->
 
-            <h2 class="scroll-container-title"><span>Storage:</span></h2>
+            <h2 class="scroll-container-title">Storage</h2>
             <p>Decide whether the deivce captures video clips or stills of detections and whether or not 
                 automatic resource management is in place.
             </p>
-
             <div class="settings-container">
-
-                <h3>Automatic Resource Management</h3>
+                
+                <h3>Automatic Resource Management : <span class = 'toggle-output' id="toggle-output1">{{ settings.storage_settings.auto_resource_management }}</span></h3>
                 <p>Determine whether or not the device or yourself is in control of the devices resources.</p>
 
                 <div class="toggle-container">
                     <p>Toggle resource management off / on. </p>
-                    <input type="checkbox"  name="storage[auto_management]" id="resource-switch" {% if settings.storage_settings.auto_resource_management %} checked {% endif %}>
-                    <label for="resource-switch">Toggle</label>
+                    <input type="checkbox" class="toggle"  name="storage_settings[auto_resource_management]" id="toggle1"
+                        value="{{ settings.storage_settings.auto_resource_management }}" {% if settings.storage_settings.auto_resource_management %} checked {% endif %}>
+                    <label for="toggle1">Toggle</label>
                 </div>
-        
-                <h3>Content Type</h3>
+                
+                <h3>Content Type : <span class = 'toggle-output' id="toggle-output2">{{ settings.storage_settings.content_type }}</span></h3>
                 <p>Choose whether the device captures video clips or image stills.</p>
 
                 <div class="toggle-container">
                     <p>Clips / Stills</p>
-                    <input type="checkbox" name="storage[content_type]" id="content-switch" {% if settings.alert_settings.content_type %} checked {% endif %}>
-                    <label for="content-switch">Toggle</label>
+                    <input type="checkbox" class="toggle" name="storage_settings[content_type]" id="toggle2"
+                        value="{{ settings.storage_settings.content_type }}" {% if settings.storage_settings.content_type %} checked {% endif %} >
+                    <label for="toggle2">Toggle</label>
                 </div>
 
             </div>

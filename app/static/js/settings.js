@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     dropdownSetup()
     slidersSetup()
+    togglesSetup()
+    setupSelects()
     handleFormSubmission()
 })
 
@@ -83,38 +85,96 @@ function updateSliders(slider) {
      * Function to update sliders values and output that value in the html.
      */
 
-    var output = document.getElementById('output' + slider.id.slice(-1))
+    var output = document.getElementById('slider-output' + slider.id.slice(-1))
 
     if (output) {
-        output.innerHTML - slider.value
+        output.innerHTML = slider.value
+    }
+}
+
+function togglesSetup() {
+
+    /**
+     * Apply event listeners to the sliders and get the values of the concerned slider.
+     */
+
+    document.querySelectorAll('.settings-container').forEach(container => {
+
+        container.addEventListener('change', function (event) {
+            if (event.target && event.target.matches('.toggle')) {
+                updateToggles(event.target)
+            }
+        })
+    })
+}
+
+
+function updateToggles(toggle) {
+
+    /**
+     * Function to update toggles values and output that value in the html.
+     */
+
+    var output = document.getElementById('toggle-output' + toggle.id.slice(-1))
+
+    if (output) {
+
+        if (output.id == 'toggle-output2') {
+            output.innerHTML = toggle.checked ? 'Stills' : 'Clips'
+        } else {
+            output.innerHTML = toggle.checked ? true : false
+        }
+    }
+}
+
+function setupSelects() {
+
+    /**
+     * Apply event listeners to the sliders and get the values of the concerned slider.
+     */
+
+    document.querySelectorAll('.settings-container').forEach(container => {
+
+        container.addEventListener('change', function (event) {
+            if (event.target && event.target.matches('.select')) {
+                updateSelects(event.target)
+            }
+        })
+    })
+}
+
+function updateSelects(select) {
+
+    /**
+     * Function to update toggles values and output that value in the html.
+     */
+
+    var output = document.getElementById('select-output0')
+
+    if (output) {
+        
+        output.innerHTML = select.value 
     }
 }
 
 function handleFormSubmission() {
 
-    /**
-     * Dynamically handle values being updated by the user on the settings page leveraging AJAX to mitigate
-     * page reloads upon submission.
-     */
+    document.getElementById('settings-form').addEventListener('change', function (event) {
 
-    var settingsForm = document.getElementById('settings-form')
+        event.preventDefault()
 
-    settingsForm.addEventListener('change', function(event) {
+        var updatedSettings = new FormData(this)
 
-        const submittedData = new FormData(this)
+        console.log(updatedSettings)
 
-        fetch(this.action, {
-            method: 'POST',
-            body : submittedData
+        fetch('/settings/update', {
+            method: 'POST', 
+            body: updatedSettings
         })
         .then(response => response.json())
         .then(data => {
-            alert('Settings applied!')
-            // Implement more dynamic user feedback.
+            console.log('Settings Updated!', data)
         })
-        .catch(error => {
-            alert('There was an error applying settings!')
-            // Same for errors, need onscreen popups.
-        })
+        .catch(error => console.error('Error updating settings!', error));
     })
 }

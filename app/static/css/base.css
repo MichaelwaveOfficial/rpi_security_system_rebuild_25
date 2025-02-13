@@ -16,8 +16,9 @@
 
     /* Colours. */
 
-    --primary-background:#afc6c2;
-    --secondary-background:#609294;
+    --primary-background: var(--gable-green);
+    --secondary-background: var(--patina);
+    --tertiary-background : var(--oracle);
 
     --primary-font-colour:#112528;
     --secondary-font-colour:#90a4a0;
@@ -155,7 +156,7 @@ label:active:after {
 /* SORTING BUTTONS */
 
 .sort-button {
-    background-color: var(--primary-button-colour);
+    background-color: var(--tertiary-background);
     width: 20%;
     font-size: 1.25em;
     border: none;
@@ -177,7 +178,8 @@ label:active:after {
     border-color: var(--primary-background);
     padding: 4px;
     font-size: 1em;
-    background-color: var(--secondary-background);
+    background-color: var(--tertiary-background);
+    color: var(--primary-font-colour);
     color: black;
 }
 

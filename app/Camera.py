@@ -12,17 +12,22 @@ class Camera(object):
 
     def __init__(self, INDEX : int, config_file : str):
 
+        # Camera location index.
         self.capture = cv2.VideoCapture(INDEX) 
+        
+        # Config file accessed from parsed dir.
         self.config_file = config_file
 
+        # Default values to act as a fallback.
         self.default_values = {
-            'motion_detecion' : {
+            'motion_detection' : {
                 'sensitivity' : 50,
                 'threat_escalation_timer' : 10,
                 'maximum_threat_threshold' : 5,
                 'regions_of_interest' : []
             },
             'stream_quality' : {
+                'preferred_quality' : 'performance',
                 'performance' : {
                     'framerate' : 60,
                     'resolution' : [1280, 720]
@@ -39,11 +44,12 @@ class Camera(object):
                 'app_password' : 'password'
             },
             'storage_settings' : {
-                'auto_resource_managment' : True,
+                'auto_resource_management' : True,
                 'content_type' : 'video'
             }
         }
 
+        # Fetch device settings.
         self.settings = self.load_settings()
 
 
@@ -71,19 +77,25 @@ class Camera(object):
 
             print('Config file not found, loading default values!')
 
-            return self.default_values
+            self.settings = self.default_values
+            self.save_settings(settings=self.settings)
+
+            return self.settings
     
 
-    def save_settings(self):
+    def save_settings(self, settings):
 
         '''
             Save currently applied settings to a JSON file for later access and retrieval.
         '''
 
-        with open(self.config_file, 'w') as config_file:
-            json.dump(self.settings, config_file, indent=4)
-            print('Settings saved successfully!')
+        try:
+            with open(self.config_file, 'w') as config_file:
+                json.dump(settings, config_file, indent=4)
 
+        except IOError as e:
+            return f'Failed to save updated values to settings file.\n{e}'
+        
 
     def recursive_update(self, settings, updated_values):
 
@@ -96,11 +108,13 @@ class Camera(object):
 
             if isinstance(value, dict) and key in settings:
 
-                self.recursive_update(settings=settings[key], updated_values=value)
+                settings[key] = self.recursive_update(settings=settings[key], updated_values=value)
 
             else:
 
                 settings[key] = value
+
+        return settings
 
 
     def update_settings(self, updated_values):
@@ -109,8 +123,8 @@ class Camera(object):
             Update settings with new values set by the user, save to the config file. 
         '''
 
-        self.rescursive_update(self.settings, updated_values)
-        self.save_settings()
+        self.recursive_update(self.settings, updated_values)
+        self.save_settings(self.settings)
 
 
     def fetch_current_settings(self):

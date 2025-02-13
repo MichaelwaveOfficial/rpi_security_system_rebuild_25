@@ -1,0 +1,35 @@
+{
+    "motion_detection": {
+        "sensitivity": 40,
+        "threat_escalation_timer": 15,
+        "maximum_threat_threshold": 3,
+        "regions_of_interest": []
+    },
+    "stream_quality": {
+        "preferred_quality": "quality",
+        "performance": {
+            "framerate": 60,
+            "resolution": [
+                1280,
+                720
+            ]
+        },
+        "quality": {
+            "framerate": 30,
+            "resolution": [
+                1920,
+                1080
+            ]
+        }
+    },
+    "alert_settings": {
+        "toggle": false,
+        "frequency": 507,
+        "target_email": "example@email.com",
+        "app_password": "password"
+    },
+    "storage_settings": {
+        "auto_resource_management": true,
+        "content_type": "video"
+    }
+}

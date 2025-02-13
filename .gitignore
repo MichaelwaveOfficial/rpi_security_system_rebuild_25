@@ -172,3 +172,4 @@ cython_debug/
 
 ## App specific dirs.
 upload_folder/
+stream_test_imgs/
