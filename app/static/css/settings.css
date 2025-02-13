@@ -53,9 +53,16 @@ body {
     padding: 5px 0px 5px 20px;
 }
 
-input[type=email], input[type=password] {
+input[type=email], input[type=password], input[type=range] {
     margin: 5px 0px 5px 20px;
+    width: 30%;
+    padding: 6px;
     border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    background-color: var(--primary-background);
+    color: rgb(189, 189, 189);
+    cursor: pointer;
 }
 
 .toggle-container {
@@ -90,28 +97,10 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: 50%;
     cursor: pointer;
     transition: background 0.3s;
-  }
-
-
-input[type=range]:hover {
-    opacity: 1;
 }
+
 
 .input-output {
     color: black;
     font-size: 32px;
-}
-
-/* SELECT MENU. */
-
-.select {
-    margin: 5px 0px 5px 20px;
-    width: 30%;
-    padding: 6px;
-    border-radius: 10px;
-    border: none;
-    font-size: 16px;
-    background-color: var(--primary-background);
-    color: rgb(189, 189, 189);
-    cursor: pointer;
 }

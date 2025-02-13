@@ -6,7 +6,7 @@
         "regions_of_interest": []
     },
     "stream_quality": {
-        "preferred_quality": "quality",
+        "preferred_quality": "performance",
         "performance": {
             "framerate": 60,
             "resolution": [
