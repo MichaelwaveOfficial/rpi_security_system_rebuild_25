@@ -43,7 +43,7 @@
 }
 
 .spinner {
-    color: var(--primary-background);
+    color: var(--tertiary-background);
     position: relative;
 }
 

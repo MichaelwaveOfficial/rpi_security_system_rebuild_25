@@ -1,5 +1,5 @@
 from app import instantiate_application
-
+import os
 
 def main():
     
@@ -10,7 +10,7 @@ def main():
     app.run(
         host='0.0.0.0',
         port=5000,
-        debug=app.config['DEBUG']
+        debug=os.getenv('DEBUG', 'TRUE')
     )
 
 

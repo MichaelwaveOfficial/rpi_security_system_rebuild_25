@@ -1,180 +1,134 @@
 
+/**
+ * Module to dynamically handle settings being updated by the user.
+ */
+
 document.addEventListener('DOMContentLoaded', function() {
 
-    /**
-     * Initialise functions once dom has loaded.
-     */
     dropdownSetup()
-    slidersSetup()
-    togglesSetup()
-    setupSelects()
+    initaliseEventListeners()
     handleFormSubmission()
+
 })
 
-function dropdownSetup() {
+function dropdownSetup(){
 
     /**
-     * Apply event listeners to dropdown containers titles. Once clicked pass the container of interest and its siblings. 
+     * Apply event listeners to available dropdown setting containers and their respective titles,
+     * Once clicked, pass the users specified containers and its siblings.
      */
 
-    var containers = document.querySelectorAll('.scroll-container')
+    const containers = document.querySelectorAll('.scroll-container')
 
-    containers.forEach(function (container) {
+    containers.forEach((container) => {
 
-        var containerTitle = container.querySelector('.scroll-container-title')
+        const containerTitle = container.querySelector('.scroll-container-title')
 
-        containerTitle.addEventListener('click', function() {
-            dropdownToggle(container, containers)
-        })
-    })
-}
+        if (containerTitle) {
 
-function slidersSetup() {
-
-    /**
-     * Apply event listeners to the sliders and get the values of the concerned slider.
-     */
-
-    document.querySelectorAll('.settings-container').forEach(container => {
-
-        container.addEventListener('input', function (event) {
-            if (event.target && event.target.matches('.slider')) {
-                updateSliders(event.target)
-            }
-        })
+            containerTitle.addEventListener('click', () => {
+                dropdownToggle(container, containers)
+            })
+        }
     })
 }
 
 function dropdownToggle(currentContainer, containers) {
 
     /**
-     * Once toggled by the user. Apply styling tweaks to either open or close the settings container 
-     * through max_height adjustments. 
+     * Toggle the specified settings container visibility by adjusting its maximum height value once selected.
      */
 
-    var currentContainerTitle = currentContainer.querySelector('.scroll-container-title')
-    var currentContainerContent = currentContainer.querySelector('.settings-container')
+    const currentContainerTitle = currentContainer.querySelector('.scroll-container-title')
+    const currentContainerContent = currentContainer.querySelector('.settings-container')
 
-    containers.forEach(function (container) {
+    if (!currentContainerTitle || !currentContainerContent) return
+
+    containers.forEach((container) => {
 
         if (container != currentContainer) {
+            const content = container.querySelector('.settings-container')
+            const title = container.querySelector('.scroll-container-title')
 
-            var content = container.querySelector('.settings-container')
-            var title = container.querySelector('.scroll-container-title')
-
-            if (content.style.maxHeight) {
+            if (content && title) {
                 content.style.maxHeight = null 
-            } else {
                 title.classList.remove('active')
             }
         }
     })
 
     currentContainerTitle.classList.toggle('active')
-
-    if (currentContainerContent.style.maxHeight) {
-        currentContainerContent.style.maxHeight = null
-    } else {
-        currentContainerContent.style.maxHeight = currentContainerContent.scrollHeight + 'px'
-    }
+    currentContainerContent.style.maxHeight = currentContainerContent.style.maxHeight ? null : `${currentContainerContent.scrollHeight}px`
 }
 
-function updateSliders(slider) {
+function initaliseEventListeners() {
 
     /**
-     * Function to update sliders values and output that value in the html.
+     * Apply event listeners for all input fields within the settings page pertaining to sliders, toggles and selects. 
      */
 
-    var output = document.getElementById('slider-output' + slider.id.slice(-1))
+    document.querySelectorAll('.settings-container').forEach((container) => {
 
-    if (output) {
-        output.innerHTML = slider.value
-    }
-}
-
-function togglesSetup() {
-
-    /**
-     * Apply event listeners to the sliders and get the values of the concerned slider.
-     */
-
-    document.querySelectorAll('.settings-container').forEach(container => {
-
-        container.addEventListener('change', function (event) {
-            if (event.target && event.target.matches('.toggle')) {
-                updateToggles(event.target)
-            }
-        })
+        container.addEventListener('input', handleUserInput)
+        container.addEventListener('change', handleUserInput)
     })
 }
 
-
-function updateToggles(toggle) {
+function handleUserInput(event) {
 
     /**
-     * Function to update toggles values and output that value in the html.
+     * Handle users input to the fields.
      */
 
-    var output = document.getElementById('toggle-output' + toggle.id.slice(-1))
+    const target = event.target
 
-    if (output) {
-
-        if (output.id == 'toggle-output2') {
-            output.innerHTML = toggle.checked ? 'Stills' : 'Clips'
-        } else {
-            output.innerHTML = toggle.checked ? true : false
-        }
+    if (target.matches('.slider')) {
+        updateOutputField(`slider-output${target.id.slice(-1)}`, target.value)
+    } else if (target.matches('.toggle')) {
+        updateOutputField(
+            `toggle-output${target.id.slice(-1)}`,
+            target.checked ? (target.id === 'toggle2' ? 'Stills' : 'True') : (target.id === 'toggle2' ? 'Clips' : 'False'))
+    } else if (target.matches('.select')) {
+        updateOutputField('select-output0', target.value)
     }
 }
 
-function setupSelects() {
+function updateOutputField(outputID, value) {
 
     /**
-     * Apply event listeners to the sliders and get the values of the concerned slider.
+     * Update the html output field for the elements given ID value.
      */
 
-    document.querySelectorAll('.settings-container').forEach(container => {
+    const output = document.getElementById(outputID)
 
-        container.addEventListener('change', function (event) {
-            if (event.target && event.target.matches('.select')) {
-                updateSelects(event.target)
-            }
-        })
-    })
-}
-
-function updateSelects(select) {
-
-    /**
-     * Function to update toggles values and output that value in the html.
-     */
-
-    var output = document.getElementById('select-output0')
-
-    if (output) {
-        
-        output.innerHTML = select.value 
-    }
+    if (output) output.textContent = value
+    
 }
 
 function handleFormSubmission() {
 
-    document.getElementById('settings-form').addEventListener('change', function (event) {
+    const form = document.getElementById('settings-form')
+    if (!form) return
+
+    form.addEventListener('change', event => {
 
         event.preventDefault()
 
-        var updatedSettings = new FormData(this)
-
-        console.log(updatedSettings)
+        const updatedSettings = new FormData(form)
 
         fetch('/settings/update', {
-            method: 'POST', 
-            body: updatedSettings
+            method: 'POST',
+            body: updatedSettings,
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Settings Updated!', data)
-        })
-        .catch(error => console.error('Error updating settings!', error));
+            .then((response) => {
+                if (!response.ok) throw new Error('Network response is not okay!')
+                return response.json
+            })
+            .then((data) => {
+                console.log('Settings updated successfully!', data)
+            })
+            .catch((error) => {
+                console.error('There was an error updating settings!', error)
+            })
     })
 }

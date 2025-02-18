@@ -24,7 +24,7 @@
     },
     "alert_settings": {
         "toggle": false,
-        "frequency": 507,
+        "frequency": 493,
         "target_email": "example@email.com",
         "app_password": "password"
     },

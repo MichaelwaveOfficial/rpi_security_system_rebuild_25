@@ -1,216 +1,74 @@
 from .AppConfig import *
 import cv2
-import time
-import json 
-import os
+from ConfigManager import ConfigManager
+
 
 class Camera(object):
 
     '''
-    
+        Functionality pertaining to the devices (Raspberry Pi) onboard camera. 
     '''
 
-    def __init__(self, INDEX : int, config_file : str):
+    def __init__(self, INDEX : int, config_manager : ConfigManager):
+
+        '''
+            Initialise an instance of the camera class.
+
+            Paramaters:
+                * INDEX (int) : index where device can be accessed, set to 0 by default in the AppConfig.py file.
+                * config_manager (ConfigManager) : Instace of the ConfigManager class handling the settings. 
+        '''
 
         # Camera location index.
         self.capture = cv2.VideoCapture(INDEX) 
-        
-        # Config file accessed from parsed dir.
-        self.config_file = config_file
 
-        # Default values to act as a fallback.
-        self.default_values = {
-            'motion_detection' : {
-                'sensitivity' : 50,
-                'threat_escalation_timer' : 10,
-                'maximum_threat_threshold' : 5,
-                'regions_of_interest' : []
-            },
-            'stream_quality' : {
-                'preferred_quality' : 'performance',
-                'performance' : {
-                    'framerate' : 60,
-                    'resolution' : [1280, 720]
-                },
-                'quality' : {
-                    'framerate' : 30,
-                    'resolution' : [1920, 1080]
-                }
-            },
-            'alert_settings' : {
-                'toggle' : False,
-                'frequency' : 600,
-                'target_email' : 'example@email.com',
-                'app_password' : 'password'
-            },
-            'storage_settings' : {
-                'auto_resource_management' : True,
-                'content_type' : 'video'
-            }
-        }
+        # Implement small delay to warm up the camera.
+        self.warmup_camera()
+
+        # Fetch properties of the camera capture.
+        self.fps = self.capture.get(cv2.CAP_PROP_FPS) if self.capture.get(cv2.CAP_PROP_FPS) > 0 else 30
+        self.frame_width = int(self.capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+        self.frame_height = int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        self.frame_size = (self.frame_width, self.frame_height)
+    
+        # Config file accessed from parsed dir.
+        self.config_manager = config_manager
 
         # Fetch device settings.
-        self.settings = self.load_settings()
+        self.settings = self.config_manager.load_settings()
 
-
-    def load_settings(self):
-
-        '''
-            Load settings from the onboard Json file if it is in existence, else use default values. Ensure that 
-                both the JSON and default dictionary values are merged to guarantee both are up to date, mitigating
-                the chances of missing key value pairs. 
-        '''
-
-        if os.path.exists(self.config_file):
-
-            with open(self.config_file, 'r') as config_file:
-
-                print('Config file present, loading settings.')
-
-                loaded_settings = json.load(config_file)
-
-                merged_settings = self.recursive_update(self.default_values, loaded_settings)
-
-                return merged_settings
-
-        else:
-
-            print('Config file not found, loading default values!')
-
-            self.settings = self.default_values
-            self.save_settings(settings=self.settings)
-
-            return self.settings
     
+    def warmup_camera(self, delay=2):
 
-    def save_settings(self, settings):
+        ''' Iterate seconds to set delay, allowing camera to warmup. '''
 
-        '''
-            Save currently applied settings to a JSON file for later access and retrieval.
-        '''
-
-        try:
-            with open(self.config_file, 'w') as config_file:
-                json.dump(settings, config_file, indent=4)
-
-        except IOError as e:
-            return f'Failed to save updated values to settings file.\n{e}'
-        
-
-    def recursive_update(self, settings, updated_values):
-
-        '''
-            Helper function to iterate through dictionary and its nested values leveraging recursion by calling itself until 
-                all keys and their values have been iterated upon.
-        '''
-
-        for key, value in updated_values.items():
-
-            if isinstance(value, dict) and key in settings:
-
-                settings[key] = self.recursive_update(settings=settings[key], updated_values=value)
-
-            else:
-
-                settings[key] = value
-
-        return settings
-
-
-    def update_settings(self, updated_values):
-
-        '''
-            Update settings with new values set by the user, save to the config file. 
-        '''
-
-        self.recursive_update(self.settings, updated_values)
-        self.save_settings(self.settings)
-
-
-    def fetch_current_settings(self):
-
-        '''
-            Helper function to return current settings stored within the JSON file.
-        '''
-
-        return self.settings
+        for _ in range(delay):
+            self.capture.read()
 
     
     def capture_frame(self):
 
         '''
-            Method to capture a frame from supplied hardware.
+           Capture a frame from supplied hardware leveraging opencv.
         '''
 
         try:
-
+            
+            # Fetch status and frame from video capture object. 
             ret, frame = self.capture.read()
 
+            # If unccessful, let user know.
             if not ret:
-
                 print('Camera could not be accessed') 
 
+            # Return frame for access. 
             return frame 
 
         except cv2.error as e:
-
+            # Inform user of a cv2 error.
             print(f'Hardware error: {e}')
 
-
-    def fake_frames(self):
-
-        '''
-            Simple test function to mimic content streaming without camera hardware. 
-        '''
-
-        # Iterate over images.
-        frames = [open(f'{str(TEST_PATH + f)}.jpg', 'rb').read() for f in ['1', '2', '3']]
-
-        # Return list
-        return frames[int(time.time()) % 3]
         
-    
-    def test_stream(self):
-        
-        '''
-        
-        '''
-
-        yield b'--frame\r\n'
-
-        while True:
-            frame = self.fake_frames()
-            yield b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n--frame\r\n'
-
-    
-    def stream_video(self):
-
-        ''' '''
-        
-        while True:
-
-            frame = self.capture_frame()
-
-            yield b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n--frame\r\n'
-        
-    
-
-    def enforce_fps(self, elapsed_time : int) -> None:
-
-        '''
-        Strictly enforce the specified framerate for the stream. Can be decreased to reduce computational load on the device. 
-
-        :param: elapsed_time - Time passed from the inital start.
-        '''
-
-        # Calcuate the time required to retrieve next frame.
-        timeout = (1 / self.settings['fps']) - elapsed_time
-
-        # If calculated timeout greater than nothing. Pause time taken to fetch next frame.
-        if timeout > 0:
-            time.sleep(timeout)
-
-
     def __del__(self):
 
         '''
