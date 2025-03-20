@@ -1,26 +1,36 @@
 
-# 🏠 RPI Home Security Project
+# 🏠-RPI-Home-Security-Project
 
-### ⚠️ Work in Progress
+This project is currently under development and visible for demonstration purposes only. Further documentation  
+will be provided as features are implemented.  
 
-This project is currently an ongoing development and currently visible for demonstration purposes only. Further documentation
-    will be provided as the project expands and features are implemented.
+The mission is to provide an **accessible, customizable home security system** leveraging a Raspberry Pi.
 
-The aim is to proivde an accessible, customisable home security system leveraging a lower spec Raspberry Pi. This system 
-processes motion, tracks detections and annotates them for you whilst giving the user access and control through the Flask 
-web server where these captures can be accessed and emailed to your account.
+This system processes motion detected, tracks and annotates these detections whilst giving users access and control through a Flask web server.
 
-This is a reattempt at what I envision my spin on accessbile home security should be and what it can offer.
+Once a valid detection is considered a threat. Users are notified through email with the capture available for access which should assist in later follow ups.
+
+This is a reattempt at my idea for **accessible** home surveillance where the user is in **full control**.
 
 ## 📖 Table of Contents
 
+---
+-[Flowcharts](#Flowcharts)
 -[Features](#Features)
 -[Prerequisites](#Prerequisites)
 -[Setup](#Setup)
 -[Configuration](#Configuration)
 -[RunningTheProject](#Run)
+---
 
-# 🚀 Features
+## Flowcharts
+
+This flowchart details the systems proprietary logic, an attempt to mitigate false positives in busy, urban environments, considering lingering detections as potential threats.
+
+![Flowcharts](./docs/picam_surveillance.jpg)
+
+
+## 🚀 Features
 
     ✔️ Motion Detection
     ✔️ Object Detection
@@ -28,7 +38,9 @@ This is a reattempt at what I envision my spin on accessbile home security shoul
     ✔️ Customizable Settings
     ✔️ Locally hosted web server
 
-# 🔧 Prerequisites
+
+
+## 🔧 Prerequisites
 
     * In order for this project to be viable, these components are required. 
 
