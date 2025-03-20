@@ -32,10 +32,11 @@ This flowchart details the systems proprietary logic, an attempt to mitigate fal
 ## 🚀 Features
 
     ✔️ Motion Detection
-    ✔️ Object Detection
     ✔️ Object Tracking
+    ✔️ Detection Annotations
     ✔️ Customizable Settings
-    ✔️ Locally hosted web server
+    ✔️ Flask Web Server
+    ✔️ Email Alerts
 
 ## 🔧 Prerequisites
 
