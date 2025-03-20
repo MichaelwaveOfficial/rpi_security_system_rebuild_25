@@ -15,12 +15,12 @@ This is a reattempt at my idea for **accessible** home surveillance where the us
 ## 📖 Table of Contents
 
 ---
--[Flowcharts](#Flowcharts)
--[Features](#Features)
--[Prerequisites](#Prerequisites)
--[Setup](#Setup)
--[Configuration](#Configuration)
--[RunningTheProject](#Run)
+*[Flowcharts](#Flowcharts)
+*[Features](#Features)
+*[Prerequisites](#Prerequisites)
+*[Setup](#Setup)
+*[Configuration](#Configuration)
+*[RunningTheProject](#Run)
 ---
 
 ## Flowcharts
