@@ -15,20 +15,19 @@ This is a reattempt at my idea for **accessible** home surveillance where the us
 ## 📖 Table of Contents
 
 ---
-*[Flowcharts](#Flowcharts)
-*[Features](#Features)
-*[Prerequisites](#Prerequisites)
-*[Setup](#Setup)
-*[Configuration](#Configuration)
-*[RunningTheProject](#Run)
+1. [Flowcharts](#-flowcharts)
+2. [Features](#-features)
+3. [Prerequisites](#-prerequisites)
+4. [Setup](#-setup)
+5. [Configuration](#️-configuration)
+6. [RunningTheProject](#️-run)
 ---
 
-## Flowcharts
+## 📊 Flowcharts
 
 This flowchart details the systems proprietary logic, an attempt to mitigate false positives in busy, urban environments, considering lingering detections as potential threats.
 
 ![Flowcharts](./docs/picam_surveillance.jpg)
-
 
 ## 🚀 Features
 
@@ -37,8 +36,6 @@ This flowchart details the systems proprietary logic, an attempt to mitigate fal
     ✔️ Object Tracking
     ✔️ Customizable Settings
     ✔️ Locally hosted web server
-
-
 
 ## 🔧 Prerequisites
 
@@ -93,4 +90,3 @@ Update the .env file with your credentials:
 Run the project:
 
     * python main.py
-
