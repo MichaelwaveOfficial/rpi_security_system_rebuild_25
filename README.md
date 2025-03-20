@@ -14,14 +14,14 @@ This is a reattempt at my idea for **accessible** home surveillance where the us
 
 ## 📖 Table of Contents
 
-
-    -[Flowcharts](#Flowcharts)
-    -[Features](#Features)
-    -[Prerequisites](#Prerequisites)
-    -[Setup](#Setup)
-    -[Configuration](#Configuration)
-    -[RunningTheProject](#Run)
-
+---
+-[Flowcharts](#Flowcharts)
+-[Features](#Features)
+-[Prerequisites](#Prerequisites)
+-[Setup](#Setup)
+-[Configuration](#Configuration)
+-[RunningTheProject](#Run)
+---
 
 ## Flowcharts
 
@@ -57,7 +57,7 @@ This flowchart details the systems proprietary logic, an attempt to mitigate fal
         Python 3.11
         Gmail Account (Required for email alerts)
 
-# 🛠 Setup
+## 🛠 Setup
 
 Clone this git repo with:
 
@@ -69,7 +69,7 @@ Install dependencies:
 
     * pip install -r requirements.txt 
 
-# ⚙️ Configuration
+## ⚙️ Configuration
 
     * setting up email alerts.
 
@@ -88,7 +88,7 @@ Update the .env file with your credentials:
     * APP_PASSWORD=your-generated-app-password
     * TARGET_EMAIL=recipient@email.com
 
-# ▶️ Run
+## ▶️ Run
 
 Run the project:
 
